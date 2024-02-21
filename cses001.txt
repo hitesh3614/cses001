@@ -1,0 +1,141 @@
+int main() {
+  ExpenseManager manager;
+
+  while (true) {
+    cout << "\n----- Finance Management System -----\n";
+    cout << "1. Add Educational Expense\n";
+    cout << "2. Add Food Expense\n";
+    cout << "3. Add Grocery Expense\n";
+    cout << "4. Add Travel Expense\n";
+    cout << "5. Add Stationery Expense\n";
+    cout << "6. Display Report\n";
+    cout << "7. Exit\n";
+
+    cout << "\nEnter your choice (1-7): ";
+    int choice;
+    cin >> choice;
+    cin.ignore(); // Clear the newline character from the input buffer
+
+    if (choice == 1 || choice == 2 || choice == 3 || choice == 4) {
+      string category;
+      switch (choice) {
+        case 1:
+          category = "Educational";
+          break;
+        case 2:
+          category = "Food";
+          break;
+        case 3:
+          category = "Grocery";
+          break;
+        case 4:
+          category = "Travel";
+          break;
+      }
+      float amount;
+      cout << "Enter the amount spent on " << category << ": $";
+      cin >> amount;
+      manager.addExpense(category, amount);
+    } else if (choice == 5) {
+      int numItems;
+      cout << "Enter the number of stationery items: ";
+      cin >> numItems;
+      cin.ignore(); // Clear the newline character from the input buffer
+
+      for (int i = 0; i < numItems; ++i) {
+        string item;
+        float amount;
+        cout << "Enter the stationery item: ";
+        getline(cin, item);
+        cout << "Enter the amount spent on " << item << ": $";
+        cin >> amount;
+        manager.addStationeryExpense(item, amount);
+      }
+    } else if (choice == 6) {
+      manager.displayReport();
+    } else if (choice == 7) {
+      cout << "\nExiting Finance Management System. Goodbye!\n";
+      break;
+    } else {
+      cout << "Invalid choice. Please enter a number between 1 and 7.\n";
+    }
+  }
+
+  return 0;
+}
+#include <iostream>
+#include <string>
+#include <iomanip>
+#include <map>
+
+using namespace std;
+
+class ExpenseManager {
+private:
+  float total_expense;
+  map<string, float> expenses;
+  map<string, float> stationery_expenses;
+
+public:
+  ExpenseManager() : total_expense(0.0) {}
+
+  void addExpense(const string& category, float amount) {
+    expenses[category] += amount;
+    total_expense += amount;
+  }
+
+  void addStationeryExpense(const string& item, float amount) {
+    stationery_expenses[item] += amount;
+    total_expense += amount;
+  }
+
+  float predictNextMonthExpense(bool increase = false, bool decrease = false) const {
+    float predicted_expense = total_expense;
+    if (increase) {
+      predicted_expense *= 1.2; // Add 20%
+    } else if (decrease) {
+      predicted_expense *= 0.8; // Deduct 20%
+    }
+    return predicted_expense;
+  }
+
+  void displayReport() const {
+    cout << "\n----- Finance Management System Report -----\n";
+    cout << fixed << setprecision(2);
+    cout << "Total Expenses: $" << total_expense << "\n\n";
+
+    // ... (Rest of the displayReport code)
+  }
+};
+
+int main() {
+  ExpenseManager manager;
+
+  while (true) {
+    // ... (Rest of the main code)
+
+    else if (choice == 6) {
+      manager.displayReport();
+
+      cout << "\nDo you plan to spend more next month? (y/n): ";
+      char increase_choice;
+      cin >> increase_choice;
+
+      cout << "\nDo you plan to cut expenses next month? (y/n): ";
+      char decrease_choice;
+      cin >> decrease_choice;
+
+      float adjusted_prediction = manager.predictNextMonthExpense(
+          increase_choice == 'y', decrease_choice == 'y');
+
+      cout << "\nAdjusted Prediction for Next Month: $" << adjusted_prediction << "\n";
+
+    } else if (choice == 7) {
+      // ... (Exit code)
+    } else {
+      // ... (Invalid choice code)
+    }
+  }
+
+  return 0;
+}
